@@ -6,105 +6,123 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>블로그 매입 FAQ</title>
   <style>
+    :root {
+      --bg-color: #f4f6f8;
+      --text-color: #333;
+      --card-bg: #fff;
+    }
+    body.dark {
+      --bg-color: #1e1e1e;
+      --text-color: #f4f4f4;
+      --card-bg: #2c2c2c;
+    }
     body {
       font-family: Arial, sans-serif;
       padding: 40px;
-      background: #f4f6f8;
-      color: #333;
+      background: var(--bg-color);
+      color: var(--text-color);
+      transition: background 0.3s, color 0.3s;
     }
     h1 {
       text-align: center;
       margin-bottom: 30px;
     }
-    input[type="text"] {
+    input[type="text"], select {
       width: 100%;
       padding: 14px;
       font-size: 16px;
       border: 1px solid #ccc;
       border-radius: 6px;
-      margin-bottom: 30px;
+      margin-bottom: 20px;
+    }
+    .toggle-mode {
+      float: right;
+      margin-top: -60px;
+      margin-bottom: 20px;
     }
     .faq-item {
-      background: #fff;
+      background: var(--card-bg);
       padding: 20px;
       border-radius: 8px;
       margin-bottom: 15px;
       box-shadow: 0 2px 4px rgba(0, 0, 0, 0.06);
+      transition: background 0.3s, color 0.3s;
     }
     .question {
       font-weight: 600;
       cursor: pointer;
     }
     .answer {
-      display: none;
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.4s ease, padding 0.4s ease;
+    }
+    .faq-item.active .answer {
+      max-height: 400px;
       margin-top: 10px;
-      line-height: 1.6;
+      padding-top: 10px;
     }
   </style>
 </head>
 <body>
   <h1>블로그 매입 자주 묻는 질문 (FAQ)</h1>
+  <button class="toggle-mode" onclick="toggleMode()">🌙 다크모드 전환</button>
   <input type="text" id="searchInput" placeholder="궁금한 질문 키워드를 입력하세요 (예: 가격, 계약, 게시글)..." />
-  <div id="faqContainer">
-    <div class="faq-item">
-      <div class="question">Q. 블로그를 왜 사려고 하시는 건가요?</div>
-      <div class="answer">A. 저희는 병원, 로펌, 학원, 지역상권 등 실제 사업자들의 마케팅을 돕는 합법적인 광고 대행사입니다. 최적화된 블로그를 통해 검색 노출 효과를 극대화하고, 고객사의 신뢰도 있는 홍보 채널을 구축하기 위해 블로그를 매입하고 있습니다. 블로그 매입은 중고차 거래처럼, 잘 관리된 블로그는 높은 가치를 가집니다.</div>
-    </div>
-    <div class="faq-item">
-      <div class="question">Q. 블로그 판매 시 진행 과정은 어떻게 되나요?</div>
-      <div class="answer">A. 블로그 URL 접수 → 내부 평가 → 가격 제안 → 계약서 작성 → 계정 이전 및 연동 해지 → 대금 지급 순으로 진행됩니다.</div>
-    </div>
-    <div class="faq-item">
-      <div class="question">Q. 블로그 매입 조건은 어떻게 되나요?</div>
-      <div class="answer">A. 방문자 수, 개설 연도, 게시글 수, 품질 등을 기준으로 평가합니다. 특히 2016년 이전 블로그는 우대합니다.</div>
-    </div>
-    <div class="faq-item">
-      <div class="question">Q. 블로그 매입 후 내 정보는 안전한가요?</div>
-      <div class="answer">A. 단체 ID 전환을 통해 명의가 법인으로 이전되며, 주민등록번호 등 민감 정보는 요구하지 않습니다.</div>
-    </div>
-    <div class="faq-item">
-      <div class="question">Q. 매입된 블로그는 어디에 사용되나요?</div>
-      <div class="answer">A. 병원, 로펌, 학원, 헬스장 등 일반 사업장의 마케팅 용도로만 활용되며 불법 사용은 불가능합니다.</div>
-    </div>
-    <div class="faq-item">
-      <div class="question">Q. 기존 포스팅은 어떻게 처리되나요?</div>
-      <div class="answer">A. 요청 시 백업 도와드리며, 삭제 요청도 가능합니다. 신규 블로그 운영도 마케팅 측면에서 지원해드립니다.</div>
-    </div>
-    <div class="faq-item">
-      <div class="question">Q. 네이버 이메일은 계속 사용 가능한가요?</div>
-      <div class="answer">A. 블로그 매각 후 해당 네이버 계정은 사용이 어렵습니다. 새 계정을 생성하고 기존 메일을 연동해 사용하시면 됩니다.</div>
-    </div>
-    <div class="faq-item">
-      <div class="question">Q. 계정에 연동된 인증/페이 등은 어떻게 해야 하나요?</div>
-      <div class="answer">A. 매각 전에 네이버페이, 멤버십, 본인 인증 등 모든 연동 서비스는 해지 또는 탈퇴해주셔야 합니다.</div>
-    </div>
-    <div class="faq-item">
-      <div class="question">Q. 계약은 어떻게 이루어지나요?</div>
-      <div class="answer">A. 법적 효력이 있는 계약서를 작성하며, 고객 요청 시 특약사항도 반영 가능합니다. 계약 후 대금이 지급됩니다.</div>
-    </div>
-    <div class="faq-item">
-      <div class="question">Q. 게시글의 저작권은 누구에게 있나요?</div>
-      <div class="answer">A. 매각 후에는 블로그에 포함된 게시글의 소유권이 이음컴퍼니로 이전되며, 개인 보관용 백업은 지원됩니다.</div>
-    </div>
-  </div>
+  <select id="categorySelect">
+    <option value="">전체 카테고리</option>
+    <option value="가격">가격</option>
+    <option value="보안">보안</option>
+    <option value="계약">계약</option>
+    <option value="활용">활용</option>
+    <option value="진행">진행</option>
+  </select>
+  <div id="faqContainer"></div>
+
   <script>
-    const searchInput = document.getElementById('searchInput');
-    const faqItems = document.querySelectorAll('.faq-item');
+    const faqs = [
+      { q: "블로그를 왜 사려고 하시는 건가요?", a: "병원, 로펌 등 실제 광고용으로만 사용되며 불법적 용도로는 사용되지 않습니다. 블로그는 마치 중고차처럼 정당한 가치를 인정받고 거래됩니다.", c: "활용" },
+      { q: "블로그 판매 시 진행 과정은 어떻게 되나요?", a: "URL 접수 → 평가 → 가격 제안 → 계약 → 계정이전 → 대금지급. 중고차 거래처럼 투명하게 진행됩니다.", c: "진행" },
+      { q: "매입 대상이 되는 블로그는 어떤가요?", a: "2016년 이전 개설, 방문자 수, 게시글 수 등으로 판단합니다.", c: "가격" },
+      { q: "블로그 매입 후 내 정보는 안전한가요?", a: "단체 ID 전환으로 법인 명의로 이전되며 민감한 개인정보는 요구하지 않습니다.", c: "보안" },
+      { q: "기존 포스팅은 어떻게 되나요?", a: "요청 시 백업 후 삭제 가능. 새 블로그 운영도 도와드립니다.", c: "활용" },
+      { q: "네이버 이메일은 계속 사용할 수 있나요?", a: "매각 후 해당 계정 사용 불가. 새 계정 생성 후 연동해 사용하세요.", c: "보안" },
+      { q: "연동된 인증, 페이 등은 어떻게 해야 하나요?", a: "모두 해지/탈퇴하셔야 소유권 이전이 원활합니다.", c: "보안" },
+      { q: "계약은 어떻게 하나요?", a: "법적 효력 있는 계약서 작성 후 대금 지급. 특약도 가능.", c: "계약" },
+      { q: "게시글 저작권은 어떻게 되나요?", a: "매각 후 소유권은 이음컴퍼니에 있으며 백업도 제공됩니다.", c: "계약" }
+    ];
 
-    searchInput.addEventListener('input', () => {
-      const keyword = searchInput.value.toLowerCase();
-      faqItems.forEach(item => {
-        const question = item.querySelector('.question').textContent.toLowerCase();
-        item.style.display = question.includes(keyword) ? '' : 'none';
+    const container = document.getElementById("faqContainer");
+    function renderFaqs() {
+      container.innerHTML = '';
+      const keyword = document.getElementById("searchInput").value.toLowerCase();
+      const category = document.getElementById("categorySelect").value;
+      faqs.forEach(({ q, a, c }) => {
+        const match = q.toLowerCase().includes(keyword);
+        const catMatch = !category || c === category;
+        if (match && catMatch) {
+          const item = document.createElement("div");
+          item.className = "faq-item";
+          item.innerHTML = `
+            <div class="question">${q}</div>
+            <div class="answer">${a}</div>
+          `;
+          item.querySelector('.question').addEventListener('click', function () {
+            item.classList.toggle('active');
+            item.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          });
+          container.appendChild(item);
+        }
       });
-    });
+    }
 
-    document.querySelectorAll('.question').forEach(q => {
-      q.addEventListener('click', function () {
-        const answer = this.nextElementSibling;
-        answer.style.display = answer.style.display === 'block' ? 'none' : 'block';
-      });
-    });
+    document.getElementById("searchInput").addEventListener("input", renderFaqs);
+    document.getElementById("categorySelect").addEventListener("change", renderFaqs);
+
+    function toggleMode() {
+      document.body.classList.toggle("dark");
+    }
+
+    renderFaqs();
   </script>
 </body>
 </html>
