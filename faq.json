@@ -157,30 +157,18 @@
       const c = document.getElementById("newCategory").value;
       if (!q || !aRaw) return alert("질문과 답변을 모두 입력해주세요.");
       const a = aRaw.split(/\n+/).map(line => line.trim()).filter(Boolean);
-      faqs.push({ q, a, c });
-      saveToLocalStorage();
-      renderFaqs();
-      document.getElementById("newQuestion").value = "";
-      document.getElementById("newAnswer").value = "";
-    }
-
-    function saveToLocalStorage() {
-      localStorage.setItem("faqData", JSON.stringify(faqs));
-    }
-
-    function loadFromLocalStorage() {
-      const saved = localStorage.getItem("faqData");
-      if (saved) {
-        try {
-          const parsed = JSON.parse(saved);
-          if (Array.isArray(parsed)) {
-            faqs.splice(0, faqs.length, ...parsed);
-          }
-        } catch (e) {
-          console.error("FAQ 로드 오류", e);
-        }
-      }
-    }
+      fetch('http://localhost:5000/add_faq', {
+    method: 'POST',
+    headers: {'Content-Type': 'application/json'},
+    body: JSON.stringify({q, a, c})
+  }).then(res => {
+    if (!res.ok) throw new Error('서버 에러');
+    alert("FAQ가 추가되고 자동 반영되었습니다!\n(잠시 후 새로고침)");
+    setTimeout(() => location.reload(), 1000);
+  }).catch(e => {
+    alert('FAQ 추가 중 오류 발생: ' + e.message);
+  });
+}
 
     document.getElementById("searchInput").addEventListener("input", renderFaqs);
     document.getElementById("categorySelect").addEventListener("change", renderFaqs);
