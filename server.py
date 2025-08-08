@@ -3,7 +3,10 @@ import json
 import subprocess
 import re
 
+from flask_cors import CORS
+
 app = Flask(__name__)
+CORS(app)
 
 FAQ_JSON = "faq.json"
 INDEX_HTML = "index.html"
